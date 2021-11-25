@@ -40,9 +40,9 @@ def main():
 
     endpoint_url = 'https://api.twitter.com/2/tweets/search/recent'
 
-    keyword = '(covid OR covid19) lang:en -is:retweet'
-    start_time = '2021-11-18T00:00:00.000Z'
-    end_time = '2021-11-21T00:00:00.000Z'
+    keyword = '(covid OR covid19 OR coronavirus OR vaccination OR pfizer OR moderna OR astrazeneca) lang:en -is:retweet'
+    start_time = '2021-11-20T00:00:00.000Z'
+    end_time = '2021-11-23T00:00:00.000Z'
     max_results = 100 if args.total > 100 else args.total
     params = {
         'query': keyword,
@@ -90,9 +90,11 @@ def main():
                 result += response['data']
                 count += result_count
             break
+        
+        print(f'tweets fetched: {count}')
         time.sleep(5)
 
-    print(f'total tweet fetched: {count}')
+    print(f'total tweets fetched: {count}')
     
     with open(args.output, 'w') as f:
         for tweet in result:
