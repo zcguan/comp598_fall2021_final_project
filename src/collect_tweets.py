@@ -90,13 +90,13 @@ def main():
                 result += response['data']
                 count += result_count
             break
-        
+
         print(f'tweets fetched: {count}')
         time.sleep(5)
 
     print(f'total tweets fetched: {count}')
     
-    with open(args.output, 'w') as f:
+    with open(args.output, 'w', encoding='utf-8') as f:
         for tweet in result:
             f.write(json.dumps(tweet) + '\n')
 
