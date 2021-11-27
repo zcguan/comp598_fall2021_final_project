@@ -1,4 +1,3 @@
-import os
 import argparse
 import json
 import random
@@ -18,12 +17,13 @@ def main():
 
     posts = random.sample(lines, max)
 
-    result = ['id\ttweet\tcoding\n']
+    result = ['id\tcontext\tmetrics\ttweet\tcoding\tsentiment\n']
     for post in posts:
         p = json.loads(post)
         text = p['text']
-        text = text.replace('\n', ' ').replace('\t', ' ')
-        result.append(f'{p["id"]}\t{text}\t\n')
+        text = text.replace('\r', ' ').replace('\n', ' ').replace('\t', ' ')
+        context = p['context_annotations'] if 'context_annotations' in p else ''
+        result.append(f'{p["id"]}\t{context}\t{p["public_metrics"]}\t{text}\t\t\n')
 
     with open(args.output, 'w', encoding='utf-8') as f:
         f.writelines(result)
