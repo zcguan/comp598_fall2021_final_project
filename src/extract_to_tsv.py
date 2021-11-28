@@ -22,8 +22,8 @@ def main():
         p = json.loads(post)
         text = p['text']
         text = text.replace('\r', ' ').replace('\n', ' ').replace('\t', ' ')
-        context = p['context_annotations'] if 'context_annotations' in p else ''
-        result.append(f'{p["id"]}\t{context}\t{p["public_metrics"]}\t{text}\t\t\n')
+        context = json.dumps(p['context_annotations']) if 'context_annotations' in p else ''
+        result.append(f'{p["id"]}\t{context}\t{json.dumps(p["public_metrics"])}\t{text}\t\t\n')
 
     with open(args.output, 'w', encoding='utf-8') as f:
         f.writelines(result)
