@@ -7,7 +7,7 @@ Topics of study:
 3. How positive/negative the response to the pandemic/vaccination has been.
 ---
 TODO:
-- [ ] Finish data collection before november 27
+- [x] Finish data collection before november 27
 - [ ] Open coding on 200 tweets, investigate and develop a set of topics
 - [ ] Manually annotate all 1000 tweets
 - [ ] Analysis and report writing

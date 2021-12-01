@@ -16,18 +16,19 @@
     -  -->
 
 
-1. Policies and health measures
+1. Policies and health/sanitary measures
     - social distancing
     - hand washing
     - masks
     - temperature check
     - travel bans
     - governmental regulations
-    - vaccine is bad
+    - vaccine passport
+    - lockdowns
 2. Daily life impact
     - essential supplies
-    - personal opinion
-    - I took X vaccine shot
+    - personal experience
+    - school
 3. Macroeconomics impact
     - stock markets
     - impact on industries
@@ -35,9 +36,16 @@
     - new (use of) technologies
     - new scientific discoveries
     - new virus variants
+    - new studies
 5. Pandemic severity
     - death rate
     - infection rate
     - vaccination rate
     - perceptions
     - warnings
+6. Vaccination
+    - vaccination opinons\concerns
+    - vaccine effectiveness
+    - booster shots
+    - new vaccines
+7. Memes
