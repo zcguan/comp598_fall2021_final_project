@@ -8,7 +8,7 @@ Topics of study:
 ---
 TODO:
 - [x] Finish data collection before november 27
-- [ ] Open coding on 200 tweets, investigate and develop a set of topics
+- [x] Open coding on 200 tweets, investigate and develop a set of topics
 - [ ] Manually annotate all 1000 tweets
 - [ ] Analysis and report writing
 ---
