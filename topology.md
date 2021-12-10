@@ -29,7 +29,7 @@
     - essential supplies
     - personal experience
     - school
-3. Macroeconomics impact
+3. Social-economical impact
     - stock markets
     - impact on industries
 4. Breakthroughs
