@@ -2,6 +2,11 @@ import argparse
 import re
 import json
 import pandas as pd
+from nltk import RegexpTokenizer
+import os
+
+BASE_DIR = os.path.dirname(__file__)
+DATA_DIR = os.path.join(BASE_DIR, '..', 'data')
 
 def main():
     parser = argparse.ArgumentParser()
@@ -18,13 +23,37 @@ def main():
     log += df.groupby('coding')['id'].count().reset_index(name='count').to_string(index=False) + '\n\n'
     log += df.groupby('sentiment')['id'].count().reset_index(name='count').to_string(index=False) + '\n'
     log += f'total tweets: {len(df.index)}' + '\n'
-    
+
     if args.verbose:
         print(log)
 
+    # lower, remove numbers and links and tokenize
+    tokenizer = RegexpTokenizer(r'\w+') # remove punctuations
+    df['tweet'] = [re.sub(r'\bhttps\S*\b', '', s.lower()) for s in df['tweet']]
+    df['tweet'] = [re.sub(r'\d', ' ', s) for s in df['tweet']]
+    df['tweet'] = [tokenizer.tokenize(s) for s in df['tweet']]
+    
+    # remove stopwords
+    stop_words = set()
+    with open(os.path.join(DATA_DIR, 'stopwords.txt')) as f:
+        for line in f:
+            if not line.startswith('#'):
+                stop_words.add(line.strip('\n'))
+    
+    df['tweet'] = [[token for token in l if token not in stop_words] for l in df['tweet']]
+    
     # tf-idf(w, tweet, script) = tf(w, tweet) x idf(w, script)
     # tf(w, tweet) = the number of times tweet contains the word w
     # idf(w, script) = log [(total number of tweets) /(number of tweets that use the word w)]
+
+    # idf
+    total_word_count = {}
+    sample_size = len(df.index) # 10000
+    tweets = df['tweet'].tolist()
+    # print(tweets[:3])
+    for tweet in tweets:
+        pass
+
 
     # by topic
     for topic in range(1,7):
