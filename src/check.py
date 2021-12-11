@@ -11,8 +11,8 @@ df = pd.read_csv(annotation, sep='\t')
 
 print(df[df['sentiment'].isnull() & df['coding'].notnull()])
 
-print(df.groupby('coding').count())
-print(df.groupby('sentiment').count())
+print(df.groupby('coding')['id'].count().reset_index(name='count'))
+print(df.groupby('sentiment')['id'].count().reset_index(name='count'))
 df[df['coding'].isnull()].to_csv(remain, sep='\t', columns=['id', 'tweet'])
 
 
