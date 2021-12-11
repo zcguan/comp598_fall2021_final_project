@@ -4,9 +4,80 @@ import json
 import pandas as pd
 from nltk import RegexpTokenizer
 import os
+import os.path as osp
 
 BASE_DIR = os.path.dirname(__file__)
 DATA_DIR = os.path.join(BASE_DIR, '..', 'data')
+
+'''counts number of occurence of each word in a tweet'''
+def count_words_topic(tweet):
+    
+    word_count={}
+    #tweet passed in as list of words
+    for word in tweet:
+
+        if word.lower() not in word_count:
+            word_count[word.lower()]=1
+        else:
+            word_count[word.lower()]+=1
+
+    return word_count
+
+
+'''get counts of all words by topic'''
+def get_totals(df):
+
+    topic_wc = {n:{} for n in range(1,7)}
+
+    for topic,tweet in zip(df['coding'],df['tweet']):
+
+        #get num appearences of each word in tweet
+        word_counts = count_words_topic(tweet)
+
+        #all words in word_counts are lowercase
+
+        #update topic_wc with count values of words in act
+        for word in word_counts:
+            if word not in topic_wc[int(topic)]:
+                topic_wc[int(topic)][word] = word_counts[word]
+            else:
+                topic_wc[int(topic)][word] += word_counts[word]
+    return topic_wc
+
+'''keeps words that appear more than 5 times across all tweets'''
+def words_more5(topic_wc):
+    
+    sus_words = {}
+    for topic in topic_wc:
+        for word in topic_wc[topic]:
+            if topic_wc[topic][word] < 5:
+                if word not in sus_words:
+                    sus_words[word] = topic_wc[topic][word]
+                else:
+                    sus_words[word] += topic_wc[topic][word]
+
+    #remove words from topic_wc if appear less than 5 times
+    for word in sus_words:
+        if sus_words[word] < 5:
+            for topic in topic_wc:
+                if word in topic_wc[topic]:
+                    topic_wc[topic].pop(word)
+    return topic_wc
+
+
+def to_json(out_file,in_dict):
+    dir_name,file_name = osp.split(out_file)
+
+    if dir_name != '':
+        try:
+            os.makedirs(dir_name)
+        except OSError as error:
+           pass
+
+    with open(out_file,'w') as f:
+            json.dump(in_dict,f,indent=2)
+
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -50,48 +121,17 @@ def main():
     total_word_count = {}
     sample_size = len(df.index) # 10000
     tweets = df['tweet'].tolist()
-    # print(tweets[:3])
-    for tweet in tweets:
-        pass
-
-
+    
     # by topic
     for topic in range(1,7):
         df_topic = df[df['coding'] == topic]
     
+    #get word count for each topic (all words must appear at least 5 times over all tweets)
+    topic_wc = get_totals(df)
+    topic_wc = words_more5(topic_wc)
 
-    # l = []
-    # with open(args.input, encoding='utf-8') as f:
-    #     with open(args.output, 'w', encoding='utf-8') as o:
-    #         for line in f:
-    #             line = line.split('\t')
-    #             if not line[2]:
-    #                 print(line)
-    #                 print(line[2])
-    #                 return
-    #             text = line[3]
-    #             text = re.sub(r'\bhttps:.*\b', '', text)
-    #             text = re.sub(r'\s+', ' ', text)
-    #             try:
-    #                 metrics = json.loads(line[2])
-    #                 likes = metrics['like_count']
-    #                 l.append((line[0], text, likes))
-    #             # re.sub(r'\W+', ' ', text)
-    #             # words = text.split()
-    #             # o.write(text+'\n\n')
-
-    #             except:
-    #                 # print(line)
-                    
-    #                 print(line[2])
-    #         l.sort(key=lambda x: x[2], reverse=True)
-    #         top10 = l[:10]
-    #         d = []
-    #         for x in top10:
-    #             d.append({'id':x[0], 'text':x[1], 'likes':x[2]})
-    #         json.dump(d,o)
-            
-
+    #output to json file
+    to_json(args.output,topic_wc)
 
 if __name__ == '__main__':
     main()
