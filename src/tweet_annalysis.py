@@ -3,6 +3,7 @@ import re
 import json
 import pandas as pd
 from nltk import RegexpTokenizer
+from nltk.corpus import stopwords
 import os
 import os.path as osp
 
@@ -105,7 +106,7 @@ def main():
     df['tweet'] = [tokenizer.tokenize(s) for s in df['tweet']]
     
     # remove stopwords
-    stop_words = set()
+    stop_words = set(stopwords.words('english'))
     with open(os.path.join(DATA_DIR, 'stopwords.txt')) as f:
         for line in f:
             if not line.startswith('#'):
@@ -118,13 +119,13 @@ def main():
     # idf(w, script) = log [(total number of tweets) /(number of tweets that use the word w)]
 
     # idf
-    total_word_count = {}
-    sample_size = len(df.index) # 10000
-    tweets = df['tweet'].tolist()
+    # total_word_count = {}
+    # sample_size = len(df.index) # 10000
+    # tweets = df['tweet'].tolist()
     
-    # by topic
-    for topic in range(1,7):
-        df_topic = df[df['coding'] == topic]
+    # # by topic
+    # for topic in range(1,7):
+    #     df_topic = df[df['coding'] == topic]
     
     #get word count for each topic (all words must appear at least 5 times over all tweets)
     topic_wc = get_totals(df)
