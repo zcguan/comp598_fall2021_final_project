@@ -2,10 +2,13 @@ import argparse
 import re
 import json
 import pandas as pd
+import nltk
 from nltk import RegexpTokenizer
 from nltk.corpus import stopwords
 import os
 import os.path as osp
+
+nltk.download('stopwords')
 
 BASE_DIR = os.path.dirname(__file__)
 DATA_DIR = os.path.join(BASE_DIR, '..', 'data')
@@ -84,7 +87,6 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', '--input')
     parser.add_argument('-o', '--output')
-    parser.add_argument('-v', '--verbose', action='store_true')
 
     args = parser.parse_args()
 
@@ -95,9 +97,6 @@ def main():
     log += df.groupby('coding')['id'].count().reset_index(name='count').to_string(index=False) + '\n\n'
     log += df.groupby('sentiment')['id'].count().reset_index(name='count').to_string(index=False) + '\n'
     log += f'total tweets: {len(df.index)}' + '\n'
-
-    if args.verbose:
-        print(log)
 
     # lower, remove numbers and links and tokenize
     tokenizer = RegexpTokenizer(r'\w+') # remove punctuations
@@ -124,8 +123,14 @@ def main():
     # tweets = df['tweet'].tolist()
     
     # # by topic
-    # for topic in range(1,7):
-    #     df_topic = df[df['coding'] == topic]
+    for topic in range(1,7):
+        df_topic = df[df['coding'] == topic]
+        log += '-'*20 + f'topic{topic}' + '-'*20 + '\n'
+        log += df_topic.groupby('coding')['id'].count().reset_index(name='count').to_string(index=False) + '\n\n'
+        log += df_topic.groupby('sentiment')['id'].count().reset_index(name='count').to_string(index=False) + '\n'
+        log += f'total tweets: {len(df_topic.index)}' + '\n'
+
+    print(log)
     
     #get word count for each topic (all words must appear at least 5 times over all tweets)
     topic_wc = get_totals(df)
