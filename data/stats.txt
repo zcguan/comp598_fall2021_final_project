@@ -1,0 +1,69 @@
+--------------------statistics--------------------
+ coding  count
+    1.0    192
+    2.0    293
+    3.0     57
+    4.0     70
+    5.0    176
+    6.0    212
+
+ sentiment  count
+      -1.0    235
+       0.0    647
+       1.0    118
+total tweets: 1000
+--------------------topic1--------------------
+ coding  count
+    1.0    192
+
+ sentiment  count
+      -1.0     51
+       0.0    128
+       1.0     13
+total tweets: 192
+--------------------topic2--------------------
+ coding  count
+    2.0    293
+
+ sentiment  count
+      -1.0     82
+       0.0    160
+       1.0     51
+total tweets: 293
+--------------------topic3--------------------
+ coding  count
+    3.0     57
+
+ sentiment  count
+      -1.0     12
+       0.0     36
+       1.0      9
+total tweets: 57
+--------------------topic4--------------------
+ coding  count
+    4.0     70
+
+ sentiment  count
+      -1.0     14
+       0.0     54
+       1.0      2
+total tweets: 70
+--------------------topic5--------------------
+ coding  count
+    5.0    176
+
+ sentiment  count
+      -1.0     22
+       0.0    149
+       1.0      5
+total tweets: 176
+--------------------topic6--------------------
+ coding  count
+    6.0    212
+
+ sentiment  count
+      -1.0     54
+       0.0    120
+       1.0     38
+total tweets: 212
+

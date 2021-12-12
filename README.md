@@ -1,5 +1,5 @@
 # comp598_fall2021_final_project
-## COVID vaccine discussions in Canadian social media (Twitter)
+## COVID vaccine discussions in social media (Twitter)
 
 Topics of study:
 1. The salient topics discussed around COVID and what each topic primarily concerns
@@ -9,7 +9,7 @@ Topics of study:
 TODO:
 - [x] Finish data collection before november 27
 - [x] Open coding on 200 tweets, investigate and develop a set of topics
-- [ ] Manually annotate all 1000 tweets
+- [x] Manually annotate all 1000 tweets
 - [ ] Analysis and report writing
 ---
 ### Collection
