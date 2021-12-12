@@ -65,6 +65,22 @@ def words_more5(topic_wc):
                     topic_wc[topic].pop(word)
     return topic_wc
 
+'''calculates average sentiment for each topic'''
+def get_avg_sentiment(df):
+
+    topic_wc = {n:{"count":0,"sentiment":0} for n in range(1,7)}
+
+    for topic,sentiment in zip(df['coding'],df['sentiment']):
+
+        topic_wc[int(topic)]["sentiment"]+= sentiment
+        topic_wc[int(topic)]["count"]+= 1
+
+    avg_sentiment = {n:0 for n in range(1,7)}
+    for topic in avg_sentiment:
+        avg_sentiment[topic] = topic_wc[topic]["sentiment"] / topic_wc[int(topic)]["count"]
+
+    return avg_sentiment
+
 
 def to_json(out_file,in_dict):
     dir_name,file_name = osp.split(out_file)
@@ -114,18 +130,6 @@ def main():
     
     df['tweet'] = [[token for token in l if token not in stop_words] for l in df['tweet']]
     
-    # tf-idf(w, tweet, script) = tf(w, tweet) x idf(w, script)
-    # tf(w, tweet) = the number of times tweet contains the word w
-    # idf(w, script) = log [(total number of tweets) /(number of tweets that use the word w)]
-
-    # idf
-    # total_word_count = {}
-    # sample_size = len(df.index) # 10000
-    # tweets = df['tweet'].tolist()
-    
-    # # by topic
-    # for topic in range(1,7):
-    #     df_topic = df[df['coding'] == topic]
     
     #get word count for each topic (all words must appear at least 5 times over all tweets)
     topic_wc = get_totals(df)
@@ -133,6 +137,7 @@ def main():
 
     #output to json file
     to_json(args.output,topic_wc)
-
+    
+    print(f"Average Sentiment score for each topic: \n {get_avg_sentiment(df)}")
 if __name__ == '__main__':
     main()
