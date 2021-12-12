@@ -2,13 +2,16 @@ import argparse
 import re
 import json
 import pandas as pd
-import nltk
 from nltk import RegexpTokenizer
 from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
 import os
 import os.path as osp
 
-nltk.download('stopwords')
+# uncomment to download the following nltk resources
+# import nltk
+# nltk.download('stopwords')
+# nltk.download('wordnet')
 
 BASE_DIR = os.path.dirname(__file__)
 DATA_DIR = os.path.join(BASE_DIR, '..', 'data')
@@ -116,9 +119,11 @@ def main():
 
     # lower, remove numbers and links and tokenize
     tokenizer = RegexpTokenizer(r'\w+') # remove punctuations
+    lemmatizer = WordNetLemmatizer()
     df['tweet'] = [re.sub(r'\bhttps\S*\b', '', s.lower()) for s in df['tweet']]
     df['tweet'] = [re.sub(r'\d', ' ', s) for s in df['tweet']]
     df['tweet'] = [tokenizer.tokenize(s) for s in df['tweet']]
+    df['tweet'] = [[lemmatizer.lemmatize(w) for w in l] for l in df['tweet']]
     
     # remove stopwords
     stop_words = set(stopwords.words('english'))
