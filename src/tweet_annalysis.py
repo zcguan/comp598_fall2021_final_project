@@ -83,7 +83,7 @@ def get_avg_sentiment(df):
 
     avg_sentiment = {n:0 for n in range(1,7)}
     for topic in avg_sentiment:
-        avg_sentiment[topic] = topic_wc[topic]["sentiment"] / topic_wc[int(topic)]["count"]
+        avg_sentiment[topic] = round(topic_wc[topic]["sentiment"] / topic_wc[int(topic)]["count"],4)
 
     return avg_sentiment
 
