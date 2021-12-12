@@ -48,7 +48,7 @@ def get_tfidf_list(topic_wc):
 def dict_to_output(topic_tfidf):
     dict_to_print = {}
     for topic in topic_tfidf:
-        dict_to_print[topic]= [x[0] for x in topic_tfidf[topic][0:10]]
+        dict_to_print[topic]= [x for x in topic_tfidf[topic][0:10]]
 
     return dict_to_print
 
