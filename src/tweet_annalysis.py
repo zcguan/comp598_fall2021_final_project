@@ -133,14 +133,20 @@ def main():
                 stop_words.add(line.strip('\n'))
     
     df['tweet'] = [[token for token in l if token not in stop_words] for l in df['tweet']]
-
-    # # by topic
+    
+    # by topic
     for topic in range(1,7):
         df_topic = df[df['coding'] == topic]
         log += '-'*20 + f'topic{topic}' + '-'*20 + '\n'
         log += df_topic.groupby('coding')['id'].count().reset_index(name='count').to_string(index=False) + '\n\n'
         log += df_topic.groupby('sentiment')['id'].count().reset_index(name='count').to_string(index=False) + '\n'
         log += f'total tweets: {len(df_topic.index)}' + '\n'
+
+        l = df_topic.to_records(index=False)
+        top10_liked = sorted(l, key=lambda x: x[1]['like_count'], reverse=True)[:10]
+        log += '-'*20 + 'top 10 liked' + '-'*20 + '\n'
+        for x in top10_liked:
+            log += str(x) + '\n'
 
     print(log)
     

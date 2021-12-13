@@ -28,7 +28,7 @@ def idf(w,topic_wc):
 
 
 def tf_idf(w,topic,topic_wc):
-    return tf(w,topic,topic_wc) * idf(w,topic_wc)
+    return round(tf(w,topic,topic_wc) * idf(w,topic_wc), 4)
 
 def get_tfidf_list(topic_wc):
 
