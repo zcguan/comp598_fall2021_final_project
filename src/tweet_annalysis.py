@@ -117,6 +117,29 @@ def main():
     log += df.groupby('sentiment')['id'].count().reset_index(name='count').to_string(index=False) + '\n'
     log += f'total tweets: {len(df.index)}' + '\n'
 
+    # by topic
+    for topic in range(1,7):
+        df_topic = df[df['coding'] == topic]
+        log += '-'*20 + f'topic{topic}' + '-'*20 + '\n'
+        log += df_topic.groupby('coding')['id'].count().reset_index(name='count').to_string(index=False) + '\n\n'
+        log += df_topic.groupby('sentiment')['id'].count().reset_index(name='count').to_string(index=False) + '\n'
+        log += f'total tweets: {len(df_topic.index)}' + '\n'
+
+        l = df_topic.to_records(index=False)
+        total_likes = sum([x[1]['like_count'] for x in l])
+        total_retweets = sum([x[1]['retweet_count'] for x in l])
+        log += f'total likes: {total_likes}, total retweets: {total_retweets}\n'
+
+        top10_liked = sorted(l, key=lambda x: x[1]['like_count'], reverse=True)[:10]
+        log += '-'*20 + 'top 10 liked' + '-'*20 + '\n'
+        for x in top10_liked:
+            log += str(x) + '\n'
+
+        top10_retweeted = sorted(l, key=lambda x: x[1]['retweet_count'], reverse=True)[:10]
+        log += '-'*20 + 'top 10 retweeted' + '-'*20 + '\n'
+        for x in top10_retweeted:
+            log += str(x) + '\n'
+
     # lower, remove numbers and links and tokenize
     tokenizer = RegexpTokenizer(r'\w+') # remove punctuations
     lemmatizer = WordNetLemmatizer()
@@ -134,22 +157,7 @@ def main():
     
     df['tweet'] = [[token for token in l if token not in stop_words] for l in df['tweet']]
     
-    # by topic
-    for topic in range(1,7):
-        df_topic = df[df['coding'] == topic]
-        log += '-'*20 + f'topic{topic}' + '-'*20 + '\n'
-        log += df_topic.groupby('coding')['id'].count().reset_index(name='count').to_string(index=False) + '\n\n'
-        log += df_topic.groupby('sentiment')['id'].count().reset_index(name='count').to_string(index=False) + '\n'
-        log += f'total tweets: {len(df_topic.index)}' + '\n'
-
-        l = df_topic.to_records(index=False)
-        top10_liked = sorted(l, key=lambda x: x[1]['like_count'], reverse=True)[:10]
-        log += '-'*20 + 'top 10 liked' + '-'*20 + '\n'
-        for x in top10_liked:
-            log += str(x) + '\n'
-
-    print(log)
-    
+        
     #get word count for each topic (all words must appear at least 5 times over all tweets)
     topic_wc = get_totals(df)
     topic_wc = words_more5(topic_wc)
@@ -157,6 +165,10 @@ def main():
     #output to json file
     to_json(args.output,topic_wc)
     
-    print(f"Average Sentiment score for each topic: \n {get_avg_sentiment(df)}")
+    log += f"Average Sentiment score for each topic: \n {get_avg_sentiment(df)}"
+    
+    with open(osp.join(DATA_DIR, 'stats.txt'), 'w', encoding='utf-8') as f:
+        f.write(log)
+
 if __name__ == '__main__':
     main()
