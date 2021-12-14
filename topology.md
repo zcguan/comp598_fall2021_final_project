@@ -48,4 +48,3 @@
     - vaccine effectiveness
     - booster shots
     - new vaccines
-7. Memes
