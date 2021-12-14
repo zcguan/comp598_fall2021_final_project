@@ -20,7 +20,7 @@ TODO:
 - [x] Manually annotate all 1000 tweets
 - [x] Analysis and report writing
 --- -->
-## Summary of topics found
+## Summary of Topics Found
 1. Policies and health/sanitary measures
 2. Daily life impact
 3. Social-economical impact
